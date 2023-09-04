@@ -1,0 +1,85 @@
+Initialisation:		
+		
+		
+		
+		
+		
+		Fairy fairy = Fairy.create();
+
+        int i=0;
+        while(i<1000){
+            Person person =fairy.person();
+            String username = person.getUsername();
+            String password = person.getPassword();
+            String firstname =person.getFirstName();
+            String lastname = person.getLastName();
+            boolean val = createAccount(con,username,password,firstname,lastname);
+            if(val){
+                i++;
+            }
+
+        }
+        int productid=1;
+        while(productid<1001){
+
+            TextProducer text = fairy.textProducer();
+            String name = text.word(1);
+            String description = text.sentence();
+            BaseProducer cost = fairy.baseProducer();
+            int price = cost.randomBetween(1,100);
+            int initialStock = cost.randomBetween(1,50);
+            boolean val = addProduct(con,name, description,price,initialStock);
+            if(val){
+                productid++;
+            }
+        }
+
+        int j=0;
+        while(j<20000){
+            String selectusername = "SELECT * FROM Users ORDER BY RAND() LIMIT 1";
+            PreparedStatement uname = con.prepareStatement(selectusername);
+            ResultSet rs = uname.executeQuery();
+            String username = "";
+            String password = "";
+            if (rs.next()) {
+                username = rs.getString("username");
+                password = rs.getString("password");
+            }
+            BaseProducer cost1 = fairy.baseProducer();
+            int prodid = cost1.randomBetween(1,1000);
+            float rating = cost1.randomBetween(0,10);
+            TextProducer text1 = fairy.textProducer();
+            String reviewText = text1.sentence();
+            boolean val = postReview(con,username,password, prodid, rating, reviewText);
+            if(val){
+                j++;
+            }
+        }
+        int orderid=1;
+        int k=0;
+        while(k<10000){
+            String selectusername = "SELECT * FROM Users ORDER BY RAND() LIMIT 1";
+            PreparedStatement uname = con.prepareStatement(selectusername);
+            ResultSet rs = uname.executeQuery();
+            String username = "";
+            String password = "";
+            if (rs.next()) {
+                username = rs.getString("username");
+                password = rs.getString("password");
+            }
+            BaseProducer cost1 = fairy.baseProducer();
+            Map<Integer,Integer> listOfProductsAndQuantities = new HashMap<>();
+
+            while(listOfProductsAndQuantities.size()<10){
+                int prodid = cost1.randomBetween(1,1000);
+                int quant = cost1.randomBetween(1,50);
+                listOfProductsAndQuantities.put(prodid,quant);
+            }
+            DateProducer d = fairy.dateProducer();
+            LocalDateTime date = d.randomDateInThePast(50);
+            boolean val = submitOrder(true,con,date.toLocalDate(),username,password, listOfProductsAndQuantities);
+            if(val){
+                k++;
+            }
+        }
+        con.close();

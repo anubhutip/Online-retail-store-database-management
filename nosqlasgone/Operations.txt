@@ -1,0 +1,255 @@
+Application Operations:
+
+    private static boolean createAccount(Connection con,String username,String password,String firstName,String lastName) throws Exception {
+        boolean success=true;
+        PreparedStatement stnew = null;
+        try{
+            String que = "INSERT INTO Users(username,password,firstName,lastName) VALUES(?,?,?,?)";
+            stnew = con.prepareStatement(que);
+            stnew.setString(1,username);
+            stnew.setString(2,password);
+            stnew.setString(3,firstName);
+            stnew.setString(4,lastName);
+            stnew.addBatch();
+            stnew.executeUpdate();
+            con.commit();
+        }catch (SQLException e) {
+            e.printStackTrace();
+            success= false;
+        } finally {
+            try {
+                // Close connection
+                if (stnew != null) {
+                    stnew.close();
+                }
+                return success;
+            } catch (Exception e) {
+                e.printStackTrace();
+                con.rollback();
+                return false;
+            }
+        }
+    }
+
+    private static boolean submitOrder(boolean init, Connection con, LocalDate date, String username, String password, Map<Integer,Integer> listOfProductsAndQuantities) throws Exception{
+        boolean success=true;
+        PreparedStatement stnew = null;
+        PreparedStatement update = null;
+        try{
+            String authent = "SELECT COUNT(1) FROM Users WHERE username ='"+ username+ "' AND password ='"+ password+"'";
+            PreparedStatement sql = con.prepareStatement(authent);
+            ResultSet rs = sql.executeQuery();
+            if (rs.next() == false) {
+                System.out.println("username or password is invalid");
+            } else {
+                int productid = 0;
+                int quantity = 0;
+                PreparedStatement checkprod = null;
+                String que = "INSERT INTO Orders(username,date,productID,quantity) VALUES(?,?,?,?)";
+                for (Map.Entry<Integer,Integer> entry : listOfProductsAndQuantities.entrySet()){
+                    productid = entry.getKey();
+                    quantity = entry.getValue();
+                    boolean placeorder=true;
+                    if(!init){
+                        String quant = "SELECT quantity FROM Products WHERE id ="+ productid;
+                        checkprod = con.prepareStatement(quant);
+                        ResultSet rs1=checkprod.executeQuery(quant);
+                        int availablequantity=0;
+                        if(rs1.next()){
+                            availablequantity = rs1.getInt("quantity");
+                        }
+                        if (availablequantity < quantity) {
+                            placeorder=false;
+                            //System.out.println("either product does not exist or quantity available is less");
+                        } else {
+                            String updatequant = "UPDATE Products SET quantity = ? WHERE id = ?";
+                            availablequantity = availablequantity - quantity;
+                            update = con.prepareStatement(updatequant);
+                            update.setInt(1, availablequantity);
+                            update.setInt(2, productid);
+                            update.executeUpdate();
+                        }
+                    }
+                    if(placeorder){
+                        stnew = con.prepareStatement(que);
+                        //stnew.setInt(1,orderid);
+                        stnew.setString(1,username);
+                        stnew.setDate(2, Date.valueOf(date));
+                        stnew.setInt(3,productid);
+                        stnew.setInt(4,quantity);
+                        stnew.executeUpdate();
+                    }
+                     con.commit();
+                    }
+                }
+        }catch (SQLException e) {
+            e.printStackTrace();
+            con.rollback();
+            success=false;
+        } finally {
+            try {
+                // Close connection
+                if (update != null) {
+                    update.close();
+                }
+                if (stnew != null) {
+                    stnew.close();
+                }
+                return success;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+    }
+
+    //First authorizes the user (as above) and then submits a review. Each user should also
+    //    only be able to post a single review for a given product.
+    private static boolean postReview(Connection con, String username,String password, int productID, float rating, String reviewText)throws Exception{
+        boolean success=true;
+        PreparedStatement stnew = null;
+        PreparedStatement sql =null;
+        try{
+            String authent = "SELECT COUNT(1) FROM Users WHERE username ='"+ username+ "' AND password ='"+ password+"'";
+
+            sql = con.prepareStatement(authent);
+            ResultSet rs = sql.executeQuery();
+            if (rs.next() == false) {
+                System.out.println("username or password is invalid");
+                success=false;
+            } else {
+                String que = "INSERT INTO Reviews(username,productID,reviewText,rating,date) VALUES(?,?,?,?,?)";
+                stnew = con.prepareStatement(que);
+                stnew.setString(1,username);
+                stnew.setInt(2,productID);
+                stnew.setString(3,reviewText);
+                stnew.setFloat(4,rating);
+                java.util.Date date=new java.util.Date();
+                java.sql.Date sqlDate=new java.sql.Date(date.getTime());
+                stnew.setDate(5,sqlDate);
+                stnew.addBatch();
+                stnew.executeUpdate();
+                con.commit();
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+            con.rollback();
+            success=false;
+        } finally {
+            try {
+                // Close connection
+                if (sql != null) {
+                    sql.close();
+                }
+                if (stnew != null) {
+                    stnew.close();
+                }
+                return success;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+    }
+
+    /**
+     * A new product is added to the database with the given name and description and the
+     * given initial stock value. This operation should provide an ID for the product which can
+     * be used in future operations.
+     */
+    private static boolean addProduct(Connection con, String name, String description, int price,int initialStock) throws Exception{
+        boolean success=true;
+        PreparedStatement stnew = null;
+        try{
+            String que = "INSERT INTO Products(name, description, price, quantity) VALUES(?,?,?,?)";
+            stnew = con.prepareStatement(que);
+            stnew.setString(1,name);
+            stnew.setString(2,description);
+            stnew.setInt(3,price);
+            stnew.setInt(4,initialStock);
+            stnew.addBatch();
+            stnew.executeUpdate();
+            con.commit();
+        }catch (SQLException e) {
+            e.printStackTrace();
+            success=false;
+        } finally {
+            try {
+                if (stnew != null) {
+                    stnew.close();
+                }
+                return success;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+    }
+
+    //Adds new inventory associated with the product, adding to the current stock level.
+    private static void updateStockLevel(Connection con, int productID, int itemCountToAdd) throws Exception{
+        PreparedStatement update = null;
+        try{
+//            String quant = "SELECT quantity FROM Products WHERE id ="+ productID;
+//            checkprod = con.prepareStatement(quant);
+//            ResultSet rs1=checkprod.executeQuery(quant);
+//            int availablequantity=0;
+//            if(rs1.next()){
+//                availablequantity = rs1.getInt("quantity");
+//            }
+            String updatequant = "UPDATE Products SET quantity = quantity + "+itemCountToAdd+ " WHERE id ="+productID;
+            update = con.prepareStatement(updatequant);
+//            update.setInt(1, availablequantity+itemCountToAdd);
+//            update.setInt(2, productID);
+            update.executeUpdate();
+            con.commit();
+        }catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (update != null) {
+                    update.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    //Return the product information and all the reviews for the given product including the
+    //    username of the reviewing user, the rating, and the text of the review.
+    private static List<String> getProductAndReviews(Connection con, int productID)throws Exception{
+        String st="SELECT * FROM Products WHERE id="+productID;
+
+        PreparedStatement p = con.prepareStatement(st);
+        ResultSet rs = p.executeQuery();
+        List<String> ll=new ArrayList<>();
+        if (rs.next()) {
+            ll.add(rs.getString("name"));
+            ll.add(rs.getString("description"));
+        }
+
+        String st2="SELECT * FROM Reviews WHERE productID="+productID;
+        PreparedStatement p2 = con.prepareStatement(st2);
+        ResultSet rs2 = p2.executeQuery();
+        if (rs2.next()) {
+            ll.add(rs2.getString("username"));
+            ll.add(rs2.getString("reviewText"));
+            ll.add(String.valueOf(rs2.getFloat("rating")));
+        }
+        return ll;
+    }
+
+    //Get the average rating value for a given user by adding the ratings for all products and
+    //    dividing by the total number of reviews the user has provided.
+    private static float getAverageUserRating(Connection con,String username)throws Exception{
+        String avgrating = "select round(avg(rating),2) as avg_rating from Reviews where username = '"+username+"'";
+        PreparedStatement pp = con.prepareStatement(avgrating);
+        ResultSet rs = pp.executeQuery();
+        float avg=0;
+        if (rs.next()) {
+            avg = rs.getFloat("avg_rating");
+        }
+        return avg;
+    }

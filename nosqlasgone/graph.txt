@@ -1,0 +1,14 @@
+Graph:
+
+As I plot the graph of number of operations and percentage of products. The values comes out to be following 
+:[9810, 9979, 8651, 10600, 10412, 10072, 10146, 4158, 6757, 9590]
+9810 operations for threads 1
+9979 operations for number of threads 2 and so on.
+avg=9017
+: [14, 15, 16, 15, 15, 15, 16, 14, 17, 15]
+avg=15.2
+14 products with less quantity for thread 1
+15 products with less quantity for number of threads 2 and so on.
+When threads are 8, both values decrease.
+
+	
