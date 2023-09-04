@@ -1,0 +1,57 @@
+Data Modeling:
+		public static void main(String[] args){
+			jdbcURL =  "jdbc:mysql://localhost:3306/ITEM";
+			jdbcUser = "root";
+			jdbcPwd = "2302";
+			Connection con = createConnection();
+			
+			String drop1 ="DROP TABLE IF EXISTS Reviews";
+			String drop2 ="DROP TABLE IF EXISTS Orders";
+			String drop3 ="DROP TABLE IF EXISTS Products";
+			String drop4 ="DROP TABLE IF EXISTS Users";
+
+			con.createStatement().execute(drop1);
+			con.createStatement().execute(drop2);
+			con.createStatement().execute(drop3);
+			con.createStatement().execute(drop4);
+
+			PreparedStatement st = con.prepareStatement("CREATE TABLE `Users` (\n" +
+					"  `username` VARCHAR(250) NOT NULL,\n" +
+					"  `password` VARCHAR(250) NOT NULL,\n" +
+					"  `firstName` VARCHAR(250) NOT NULL,\n" +
+					"  `lastName` VARCHAR(250) NOT NULL,\n" +
+					"  PRIMARY KEY (`username`))");
+			st.execute();
+			st = con.prepareStatement("CREATE TABLE `Products` (\n" +
+					"  `id` INT(4) NOT NULL AUTO_INCREMENT,\n" +
+					"  `name` VARCHAR(250) NOT NULL,\n" +
+					"  `description` VARCHAR(250) NOT NULL,\n" +
+					"  `price` INT(11) NOT NULL,\n" +
+					"  `quantity` INT(11) NOT NULL,\n" +
+					"  PRIMARY KEY (`id`,`name`))");
+			st.execute();
+			st = con.prepareStatement("CREATE TABLE `Reviews` (\n" +
+					"  `username` VARCHAR(250) NOT NULL,\n" +
+					"  `productID` INT(4) NOT NULL,\n" +
+					"  `reviewText` VARCHAR(250) NOT NULL,\n" +
+					"  `rating` FLOAT(4,2) NOT NULL,\n" +
+					"  `date` DATE NOT NULL,\n" +
+					"  PRIMARY KEY (`username`,`productID`),\n"+
+					"  FOREIGN KEY (`username`) REFERENCES Users (`username`),\n"+
+					"  FOREIGN KEY (`productID`) REFERENCES Products (`id`))");
+			st.execute();
+			st = con.prepareStatement("CREATE TABLE `Orders` (\n" +
+					"  `id` INT(11) NOT NULL AUTO_INCREMENT,\n" +
+					"  `username` VARCHAR(250) NOT NULL,\n" +
+					"  `date` DATE NOT NULL,\n" +
+					"  `productID` INT(4) NOT NULL,\n" +
+					"  `quantity` INT(4) NOT NULL,\n" +
+					"  PRIMARY KEY (`id`,`productID`),\n"+
+					"  FOREIGN KEY (`username`) REFERENCES Users (`username`),\n"+
+					"  FOREIGN KEY (`productID`) REFERENCES Products (`id`))");
+			st.execute();
+
+			con.commit();
+			st.close();
+			con.close();
+		}

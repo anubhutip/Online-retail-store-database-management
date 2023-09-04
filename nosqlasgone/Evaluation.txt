@@ -1,0 +1,469 @@
+Evaluation:
+
+	static Set<AtomicInteger> operations =new HashSet<AtomicInteger>();
+
+    static Set<Integer> prod =new HashSet<Integer>();
+
+
+    AtomicInteger at=new AtomicInteger(0);
+
+    public static void main(String[] args){
+	
+		Runnable runnable1 = new Application();
+        Thread t1 = new Thread(runnable1);
+        t1.start();
+        t1.join();
+        Connection con2 = createConnection();
+        String x = "Select count(id) as count from Products where quantity<=0;";
+        PreparedStatement uname = null;
+        int count=0;
+        try {
+            uname = con2.prepareStatement(x);
+            ResultSet rs = uname.executeQuery();
+            if (rs.next()) {
+                count = rs.getInt("count");
+            }
+            prod.add(count/10);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        con2.close();
+
+        Runnable runnable2 = new Application();
+        Thread t2 = new Thread(runnable2);
+        Thread t3 = new Thread(runnable2);
+        t2.start();
+        t3.start();
+        t2.join();
+        t3.join();
+        con2 = createConnection();
+        count=0;
+        try {
+            uname = con2.prepareStatement(x);
+            ResultSet rs = uname.executeQuery();
+            if (rs.next()) {
+                count = rs.getInt("count");
+            }
+            prod.add(count/10);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        con2.close();
+
+        Runnable runnable3 = new Application();
+        Thread t4 = new Thread(runnable3);
+        Thread t5 = new Thread(runnable3);
+        Thread t6 = new Thread(runnable3);
+        t4.start();
+        t5.start();
+        t6.start();
+        t4.join();
+        t5.join();
+        t6.join();
+        con2 = createConnection();
+        count=0;
+        try {
+            uname = con2.prepareStatement(x);
+            ResultSet rs = uname.executeQuery();
+            if (rs.next()) {
+                count = rs.getInt("count");
+            }
+            prod.add(count/10);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        con2.close();
+
+
+        Runnable runnable4 = new Application();
+        Thread t7 = new Thread(runnable4);
+        Thread t8 = new Thread(runnable4);
+        Thread t9 = new Thread(runnable4);
+        Thread t10 = new Thread(runnable4);
+        t7.start();
+        t8.start();
+        t9.start();
+        t10.start();
+        t7.join();
+        t8.join();
+        t9.join();
+        t10.join();
+        con2 = createConnection();
+        count=0;
+        try {
+            uname = con2.prepareStatement(x);
+            ResultSet rs = uname.executeQuery();
+            if (rs.next()) {
+                count = rs.getInt("count");
+            }
+            prod.add(count/10);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        con2.close();
+
+
+        Runnable runnable5 = new Application();
+        Thread t11 = new Thread(runnable5);
+        Thread t12 = new Thread(runnable5);
+        Thread t13 = new Thread(runnable5);
+        Thread t14= new Thread(runnable5);
+        Thread t15 = new Thread(runnable5);
+        t11.start();
+        t12.start();
+        t13.start();
+        t14.start();
+        t15.start();
+        t11.join();
+        t12.join();
+        t13.join();
+        t14.join();
+        t15.join();
+        con2 = createConnection();
+        count=0;
+        try {
+            uname = con2.prepareStatement(x);
+            ResultSet rs = uname.executeQuery();
+            if (rs.next()) {
+                count = rs.getInt("count");
+            }
+            prod.add(count/10);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        con2.close();
+
+
+        Runnable runnable6 = new Application();
+        Thread t16 = new Thread(runnable6);
+        Thread t17 = new Thread(runnable6);
+        Thread t18 = new Thread(runnable6);
+        Thread t19 = new Thread(runnable6);
+        Thread t20 = new Thread(runnable6);
+        Thread t21 = new Thread(runnable6);
+        t16.start();
+        t17.start();
+        t18.start();
+        t19.start();
+        t20.start();
+        t21.start();
+        t16.join();
+        t17.join();
+        t18.join();
+        t19.join();
+        t20.join();
+        t21.join();
+        con2 = createConnection();
+        count=0;
+        try {
+            uname = con2.prepareStatement(x);
+            ResultSet rs = uname.executeQuery();
+            if (rs.next()) {
+                count = rs.getInt("count");
+            }
+            prod.add(count/10);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        con2.close();
+
+
+        Runnable runnable7 = new Application();
+        Thread t22 = new Thread(runnable7);
+        Thread t23 = new Thread(runnable7);
+        Thread t24 = new Thread(runnable7);
+        Thread t25 = new Thread(runnable7);
+        Thread t26 = new Thread(runnable7);
+        Thread t27 = new Thread(runnable7);
+        Thread t28 = new Thread(runnable7);
+        t22.start();
+        t23.start();
+        t24.start();
+        t25.start();
+        t26.start();
+        t27.start();
+        t28.start();
+        t22.join();
+        t23.join();
+        t24.join();
+        t25.join();
+        t26.join();
+        t27.join();
+        t28.join();
+        con2 = createConnection();
+        count=0;
+        try {
+            uname = con2.prepareStatement(x);
+            ResultSet rs = uname.executeQuery();
+            if (rs.next()) {
+                count = rs.getInt("count");
+            }
+            prod.add(count/10);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        con2.close();
+
+
+        Runnable runnable8 = new Application();
+        Thread t29 = new Thread(runnable8);
+        Thread t30 = new Thread(runnable8);
+        Thread t31 = new Thread(runnable8);
+        Thread t32 = new Thread(runnable8);
+        Thread t33 = new Thread(runnable8);
+        Thread t34 = new Thread(runnable8);
+        Thread t35 = new Thread(runnable8);
+        Thread t36 = new Thread(runnable8);
+        t29.start();
+        t30.start();
+        t31.start();
+        t32.start();
+        t33.start();
+        t34.start();
+        t35.start();
+        t36.start();
+        t29.join();
+        t30.join();
+        t31.join();
+        t32.join();
+        t33.join();
+        t34.join();
+        t35.join();
+        t36.join();
+        con2 = createConnection();
+        count=0;
+        try {
+            uname = con2.prepareStatement(x);
+            ResultSet rs = uname.executeQuery();
+            if (rs.next()) {
+                count = rs.getInt("count");
+            }
+            prod.add(count/10);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        con2.close();
+
+
+        Runnable runnable9 = new Application();
+        Thread t37 = new Thread(runnable9);
+        Thread t38 = new Thread(runnable9);
+        Thread t39 = new Thread(runnable9);
+        Thread t40 = new Thread(runnable9);
+        Thread t41 = new Thread(runnable9);
+        Thread t42 = new Thread(runnable9);
+        Thread t43 = new Thread(runnable9);
+        Thread t44 = new Thread(runnable9);
+        Thread t45 = new Thread(runnable9);
+        t37.start();
+        t38.start();
+        t39.start();
+        t40.start();
+        t41.start();
+        t42.start();
+        t43.start();
+        t44.start();
+        t45.start();
+        t37.join();
+        t38.join();
+        t39.join();
+        t40.join();
+        t41.join();
+        t42.join();
+        t43.join();
+        t44.join();
+        t45.join();
+        con2 = createConnection();
+        count=0;
+        try {
+            uname = con2.prepareStatement(x);
+            ResultSet rs = uname.executeQuery();
+            if (rs.next()) {
+                count = rs.getInt("count");
+            }
+            prod.add(count/10);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        con2.close();
+
+
+        Runnable runnable10 = new Application();
+        Thread t46 = new Thread(runnable10);
+        Thread t47 = new Thread(runnable10);
+        Thread t48 = new Thread(runnable10);
+        Thread t49 = new Thread(runnable10);
+        Thread t50 = new Thread(runnable10);
+        Thread t51 = new Thread(runnable10);
+        Thread t52 = new Thread(runnable10);
+        Thread t53 = new Thread(runnable10);
+        Thread t54 = new Thread(runnable10);
+        Thread t55 = new Thread(runnable10);
+        t46.start();
+        t47.start();
+        t48.start();
+        t49.start();
+        t50.start();
+        t51.start();
+        t52.start();
+        t53.start();
+        t54.start();
+        t55.start();
+        t46.join();
+        t47.join();
+        t48.join();
+        t49.join();
+        t50.join();
+        t51.join();
+        t52.join();
+        t53.join();
+        t54.join();
+        t55.join();
+        con2 = createConnection();
+        count=0;
+        try {
+            uname = con2.prepareStatement(x);
+            ResultSet rs = uname.executeQuery();
+            if (rs.next()) {
+                count = rs.getInt("count");
+            }
+            prod.add(count/10);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        con2.close();
+
+
+        System.out.println(operations);
+        System.out.println(prod);
+        con.close();
+
+
+    }
+	
+	
+	
+	@Override
+    public void run() {
+        Connection con3 = null;
+        try {
+            con3 = createConnection();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Random r = new Random();
+        int low = 0;
+        int high = 101;
+        long before = System.nanoTime();
+
+        while(((System.nanoTime()-before)/ (1e9 * 60))<=5){
+            int result = r.nextInt(high-low) + low;
+            try {
+                selectmethod(result,con3);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            at.getAndIncrement();
+        }
+        operations.add(at);
+        try {
+            con3.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**CreateAccount 0-3
+     AddProduct 4-5
+     UpdateStockLevel 6-15
+     GetProductAndReviews 16-80
+     GetAverageUserRating 81-85
+     SubmitOrder 86-95
+     PostReview 96-100
+     **/
+    public void selectmethod(int prob,Connection con) throws Exception {
+        Fairy fairy = Fairy.create();
+        if(prob<=3){
+            Person person =fairy.person();
+            String username = person.getUsername();
+            String password = person.getPassword();
+            String firstname =person.getFirstName();
+            String lastname = person.getLastName();
+            createAccount(con,username,password,firstname,lastname);
+        }else if(prob>3 && prob<=5){
+            TextProducer text = fairy.textProducer();
+            String name = text.word(1);
+            String description = text.sentence();
+            BaseProducer cost = fairy.baseProducer();
+            int price = cost.randomBetween(1,100);
+            int initialStock = cost.randomBetween(1,50);
+            addProduct(con,name, description,price,initialStock);
+
+        }else if(prob>5 && prob<=15){
+            BaseProducer cost = fairy.baseProducer();
+            int itemCountToAdd = cost.randomBetween(1,50);
+            int productID = cost.randomBetween(1,1000);
+            updateStockLevel(con, productID, itemCountToAdd);
+        }
+        else if(prob>15 && prob<=80){
+            BaseProducer cost = fairy.baseProducer();
+            int productID = cost.randomBetween(1,1000);
+            getProductAndReviews(con, productID);
+        }
+        else if(prob>80 && prob<=85){
+            String selectusername = "SELECT * FROM Reviews ORDER BY RAND() LIMIT 1";
+            PreparedStatement uname = con.prepareStatement(selectusername);
+            ResultSet rs = uname.executeQuery();
+            String username = "";
+            if (rs.next()) {
+                username = rs.getString("username");
+            }
+            getAverageUserRating(con,username);
+        }
+        else if(prob>85 && prob<=95){
+            boolean val=false;
+            while(!val){
+                String selectusername = "SELECT * FROM Users ORDER BY RAND() LIMIT 1";
+                PreparedStatement uname = con.prepareStatement(selectusername);
+                ResultSet rs = uname.executeQuery();
+                String username = "";
+                String password = "";
+                if (rs.next()) {
+                    username = rs.getString("username");
+                    password = rs.getString("password");
+                }
+                BaseProducer cost1 = fairy.baseProducer();
+                Map<Integer,Integer> listOfProductsAndQuantities = new HashMap<>();
+                while(listOfProductsAndQuantities.size()<10){
+                    int prodid = cost1.randomBetween(1,1000);
+                    int quant = cost1.randomBetween(1,50);
+                    listOfProductsAndQuantities.put(prodid,quant);
+                }
+                DateProducer d = fairy.dateProducer();
+                LocalDateTime date = d.randomDateInThePast(50);
+                val = submitOrder(false,con,date.toLocalDate(),username,password, listOfProductsAndQuantities);
+            }
+
+
+        }else{
+            boolean val=false;
+            while(!val){
+                String selectusername = "SELECT * FROM Users ORDER BY RAND() LIMIT 1";
+                PreparedStatement uname = con.prepareStatement(selectusername);
+                ResultSet rs = uname.executeQuery();
+                String username = "";
+                String password = "";
+                if (rs.next()) {
+                    username = rs.getString("username");
+                    password = rs.getString("password");
+                }
+                BaseProducer cost1 = fairy.baseProducer();
+                int prodid = cost1.randomBetween(1,1000);
+                float rating = cost1.randomBetween(0,10);
+                TextProducer text1 = fairy.textProducer();
+                String reviewText = text1.sentence();
+                val = postReview(con,username,password, prodid, rating, reviewText);
+            }
+
+        }
+    }
